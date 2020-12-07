@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { getTopics } from "../api";
+import { Link } from "@reach/router";
 
 class Nav extends Component {
   state = {
@@ -7,10 +8,22 @@ class Nav extends Component {
   };
 
   componentDidMount() {
-    getTopics();
+    getTopics().then((topics) => {
+      this.setState({ topics });
+    });
   }
   render() {
-    return <nav></nav>;
+    const { topics } = this.state;
+    console.log(topics);
+    return (
+      <nav>
+        {topics.map((topic) => (
+          <Link key={topic.slug} to={`/topics/${topic.slug}`}>
+            <p>{topic.slug}</p>
+          </Link>
+        ))}
+      </nav>
+    );
   }
 }
 
