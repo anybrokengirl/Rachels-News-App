@@ -1,29 +1,33 @@
 import React, { Component } from "react";
-import { getArticles } from "../api";
+import { getArticles, getArticlesByTopic } from "../api";
 
 class Articles extends Component {
   state = {
     articles: [],
   };
   componentDidMount() {
-    const { article_id } = this.props;
-    getArticles(article_id).then((articles) => {
+    const { topic } = this.props;
+    getArticles(topic).then((articles) => {
       this.setState({ articles });
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    getArticles(this.props.article_id).then((articles) => {
-      this.setState({ articles });
-    });
+    const newTopic = prevProps.topic !== this.props.topic;
+    if (newTopic) {
+      getArticles(this.props.topic).then((articles) => {
+        this.setState({ articles });
+      });
+    }
   }
 
   render() {
-    const { articles, article_id } = this.props;
-
+    const { articles } = this.state;
+    const { topic } = this.props;
+    console.log(this.props);
     return (
       <div>
-        <h2>{articles.article_id}</h2>
+        <h2>{topic}</h2>
         <ul>
           {articles.map((article) => {
             return (

@@ -14,14 +14,17 @@ class Nav extends Component {
   }
   render() {
     const { topics } = this.state;
-    console.log(topics);
     return (
       <nav>
-        {topics.map((topic) => (
-          <Link key={topic.slug} to={`/topics/${topic.slug}`}>
-            <p>{topic.slug}</p>
-          </Link>
-        ))}
+        <ul>
+          {topics.map((topic) => {
+            return (
+              <Link key={topic.slug} to={`/articles/${topic.slug}`}>
+                <h2>{topic.slug}</h2>
+              </Link>
+            );
+          })}
+        </ul>
       </nav>
     );
   }

@@ -10,15 +10,14 @@ export const getTopics = () => {
   });
 };
 
-export const getArticles = (article_id) => {
+export const getArticles = (topic) => {
   return rachelsNewsAppApi
     .get("/articles", {
       params: {
-        articles: article_id,
+        topic,
       },
     })
     .then(({ data }) => {
-      console.log(data);
       return data.articles;
     });
 };
