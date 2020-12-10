@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { getSingleArticle } from "../api";
+import { getSingleArticle, increaseArticleVote } from "../api";
 import ErrorHandling from "./ErrorHandling";
 import Loading from "./Loading";
 import Comments from "./Comments";
+import ArticleVote from "./ArticleVote";
 
 class SingleArticle extends Component {
   state = {
@@ -29,9 +30,28 @@ class SingleArticle extends Component {
       });
   }
 
+  handleClick = (event) => {
+    increaseArticleVote(this.state.article.article_id).catch((err) => {
+      const {
+        response: { status, statusText },
+      } = err;
+      this.setState = (currentState) => {
+        const newState = {
+          isLoading: false,
+          hasVoted: true,
+          errorMessage: `Voting not allowed... ${status}!! ${statusText}`,
+          article: {
+            ...currentState.article,
+            votes: currentState.article.votes + 1,
+          },
+        };
+        return newState;
+      };
+    });
+  };
+
   render() {
     const { article, isLoading, hasError, errorMessage } = this.state;
-    console.log(this.props.article_id);
     if (isLoading) {
       return <Loading />;
     } else if (hasError) {
@@ -48,7 +68,10 @@ class SingleArticle extends Component {
             <p>{article.body}</p>
           </div>
           <div>
-            <p> ⭐{article.votes}</p>
+            <ArticleVote
+              votes={article.votes}
+              article_id={article.article_id}
+            />
             <p>{article.comment_count} Comments</p>
             <Comments article_id={this.props.article_id} />
           </div>

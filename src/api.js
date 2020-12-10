@@ -37,3 +37,7 @@ export const getCommentsByArticleId = (article_id) => {
       return data.comments;
     });
 };
+
+export const increaseArticleVote = (article_id) => {
+  return rachelsNewsAppApi.patch(`/article/${article_id}`, { vote: 1 });
+};
