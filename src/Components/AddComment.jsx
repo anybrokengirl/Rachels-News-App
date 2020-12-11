@@ -1,28 +1,27 @@
 import React, { Component } from "react";
-import { increaseArticleVote } from "../api";
+import { addComments } from "../api";
 import ErrorHandling from "./ErrorHandling";
 
-class ArticleVote extends Component {
+class AddComment extends Component {
   state = {
     hasVoted: false,
-    vote_count: 0,
+    comment: "",
   };
 
-  handleClick = (event) => {
-    console.log(this.props);
-    const { article_id } = this.props;
-    increaseArticleVote(article_id).catch((err) => {
+  handleChange = (event) => {
+    const { comment_id } = this.props;
+    increaseArticleVote(comment_id).catch((err) => {
       const {
         response: { status, statusText },
       } = err;
       this.setState({
         hasError: true,
-        errorMessage: `Article not found... ${status}!! ${statusText}`,
-        hasVoted: false,
-        vote_count: 0,
+        errorMessage: `Comment not found... ${status}!! ${statusText}`,
+        hasCommented: false,
+        comment_change: "",
       });
     });
-    this.setState({ vote_count: 1, hasVoted: true });
+    this.setState({ comment_change: "", hasCommented: true });
   };
 
   render() {

@@ -1,3 +1,31 @@
 .App {
   text-align: center;
+  margin: 0, auto;
+}
+
+li {
+  list-style: none;
+  border: solid, 10px;
+  border-color: black;
+}
+
+.header {
+  background-color: teal;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: medium;
+  color: thistle;
+}
+#id {
+  font-size: small;
+  justify-content: center;
+  background-color: teal;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: thistle;
 }

@@ -1,42 +1,52 @@
 import React, { Component } from "react";
 import { getCommentsByArticleId } from "../api";
-import ErrorHandling from "./ErrorHandling";
+
 import Loading from "./Loading";
 
 class Comments extends Component {
   state = {
     comments: [],
     isLoading: true,
-    hasError: false,
-    errorMessage: "",
+    sort_by: "created_at",
+    order: "asc",
   };
 
   componentDidMount() {
-    getCommentsByArticleId(this.props.article_id)
-      .then((comments) => {
+    const { sort_by, order } = this.state;
+    getCommentsByArticleId(this.props.article_id, sort_by, order).then(
+      (comments) => {
         this.setState({ comments: comments, isLoading: false });
-      })
-      .catch((err) => {
-        const {
-          response: { status, statusText },
-        } = err;
-        this.setState({
-          hasError: true,
-          isLoading: false,
-          errorMessage: `Comment not found... ${status}!! ${statusText}`,
-        });
-      });
+      }
+    );
   }
 
+  componentDidUpdate(prevState) {
+    const newSortOrder = prevState.order !== this.state.order;
+    if (newSortOrder) {
+      getCommentsByArticleId(this.props.article_id).then((comments) => {
+        this.setState({ comments: comments, isLoading: false });
+      });
+    }
+  }
+
+  handleChange = (event) => {
+    const newOrder = event.target.value;
+    this.setState({ order: newOrder });
+  };
+
   render() {
-    const { comments, isLoading, hasError, errorMessage } = this.state;
+    const { comments, isLoading } = this.state;
     if (isLoading) {
       return <Loading />;
-    } else if (hasError) {
-      return <ErrorHandling errorMessage={errorMessage} />;
     } else {
       return (
         <main>
+          <div>
+            <select onChange={this.handleChange}>
+              <option value="desc">Descending</option>
+              <option value="asc">Ascending</option>
+            </select>
+          </div>
           {comments.map((comment) => (
             <p key={comment.comment_id}>{comment.body}</p>
           ))}

@@ -10,11 +10,13 @@ export const getTopics = () => {
   });
 };
 
-export const getArticles = (topic) => {
+export const getArticles = (topic, sort_by, order) => {
   return rachelsNewsAppApi
     .get("/articles", {
       params: {
         topic,
+        sort_by,
+        order,
       },
     })
     .then(({ data }) => {
@@ -28,16 +30,25 @@ export const getSingleArticle = (article_id) => {
   });
 };
 
-export const getCommentsByArticleId = (article_id) => {
+export const getCommentsByArticleId = (article_id, sort_by, order) => {
   return rachelsNewsAppApi
-    .get(`/articles/${article_id}/comments`)
+    .get(`/articles/${article_id}/comments`, {
+      params: {
+        article_id,
+        sort_by,
+        order,
+      },
+    })
     .then(({ data }) => {
-      // console.log(data.comments[0], "<--- comments");
-
       return data.comments;
     });
 };
 
 export const increaseArticleVote = (article_id) => {
-  return rachelsNewsAppApi.patch(`/article/${article_id}`, { vote: 1 });
+  return rachelsNewsAppApi.patch(`/articles/${article_id}`, { inc_votes: 1 });
 };
+// export const addComments = (article_id) => {
+//   return rachelsNewsAppApi.post(`/articles/${article_id}/comments`, {
+//     comment: "",
+//   });
+// };
