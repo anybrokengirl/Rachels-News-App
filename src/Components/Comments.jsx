@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { getCommentsByArticleId } from "../api";
+import { getCommentsByArticleId, postComment } from "../api";
+import AddComment from "./AddComment";
 
 import Loading from "./Loading";
 
@@ -13,6 +14,7 @@ class Comments extends Component {
 
   componentDidMount() {
     const { sort_by, order } = this.state;
+
     getCommentsByArticleId(this.props.article_id, sort_by, order).then(
       (comments) => {
         this.setState({ comments: comments, isLoading: false });
@@ -29,6 +31,12 @@ class Comments extends Component {
     }
   }
 
+  addComment = (commentToAdd) => {
+    const { article_id } = this.props;
+    console.log(article_id);
+    postComment(commentToAdd, article_id);
+  };
+
   handleChange = (event) => {
     const newOrder = event.target.value;
     this.setState({ order: newOrder });
@@ -36,12 +44,14 @@ class Comments extends Component {
 
   render() {
     const { comments, isLoading } = this.state;
+
     if (isLoading) {
       return <Loading />;
     } else {
       return (
         <main>
           <div>
+            <AddComment addComment={this.addComment} />
             <select onChange={this.handleChange}>
               <option value="desc">Descending</option>
               <option value="asc">Ascending</option>

@@ -47,8 +47,13 @@ export const getCommentsByArticleId = (article_id, sort_by, order) => {
 export const increaseArticleVote = (article_id) => {
   return rachelsNewsAppApi.patch(`/articles/${article_id}`, { inc_votes: 1 });
 };
-// export const addComments = (article_id) => {
-//   return rachelsNewsAppApi.post(`/articles/${article_id}/comments`, {
-//     comment: "",
-//   });
-// };
+
+export const postComment = (newComment, article_id) => {
+  return rachelsNewsAppApi
+    .post(`/articles/${article_id}/comments`, newComment)
+    .then(({ data }) => {});
+};
+
+// export const deleteComment = (noMoreComment, article_id) => {
+//   return rachelsNewsAppApi
+// }

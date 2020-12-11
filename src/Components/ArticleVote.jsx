@@ -9,7 +9,6 @@ class ArticleVote extends Component {
   };
 
   handleClick = (event) => {
-    console.log(this.props);
     const { article_id } = this.props;
     increaseArticleVote(article_id).catch((err) => {
       const {

@@ -16,7 +16,6 @@ class Articles extends Component {
   componentDidMount() {
     const { topic } = this.props;
     const { sort_by, order } = this.state;
-
     getArticles(topic, sort_by, order)
       .then((articles) => {
         this.setState({ articles, isLoading: false });
